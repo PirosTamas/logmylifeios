@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xcrun simctl list *)",
+      "Bash(xcodebuild -list *)",
+      "Bash(swift package show-dependencies *)",
+      "Bash(swift package describe *)"
+    ]
+  }
+}
