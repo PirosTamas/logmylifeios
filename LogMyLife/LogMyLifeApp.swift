@@ -1,17 +1,18 @@
-//
-//  LogMyLifeApp.swift
-//  LogMyLife
-//
-//  Created by Piros Tamás on 2026. 05. 02..
-//
-
 import SwiftUI
+import SwiftData
 
 @main
 struct LogMyLifeApp: App {
+    let container: ModelContainer = {
+        let schema = Schema([AchievementProgress.self, DailyLifeDataQuestion.self, DailyLifeDataAnswer.self])
+        return try! ModelContainer(for: schema)
+    }()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
+                .task { NotificationScheduler.requestPermission() }
         }
+        .modelContainer(container)
     }
 }
