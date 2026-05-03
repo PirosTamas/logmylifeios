@@ -12,7 +12,9 @@ struct DailyLifeDataScreen: View {
         ZStack {
             colors.background.ignoresSafeArea()
 
-            if viewModel.questionsForToday.isEmpty {
+            if viewModel.allAnsweredToday {
+                allAnsweredView
+            } else if viewModel.questionsForToday.isEmpty {
                 emptyView
             } else if isComplete {
                 completionView
@@ -27,10 +29,20 @@ struct DailyLifeDataScreen: View {
 
     private var emptyView: some View {
         VStack(spacing: 12) {
+            Image(systemName: "calendar.badge.exclamationmark")
+                .imageScale(.large)
+                .foregroundStyle(colors.onSurfaceVariant)
+            Text("No questions scheduled for today.")
+                .foregroundStyle(colors.onSurfaceVariant)
+        }
+    }
+
+    private var allAnsweredView: some View {
+        VStack(spacing: 12) {
             Image(systemName: "checkmark.circle.fill")
                 .imageScale(.large)
                 .foregroundStyle(colors.primary)
-            Text("No questions scheduled for today.")
+            Text("All answers answered.")
                 .foregroundStyle(colors.onSurfaceVariant)
         }
     }

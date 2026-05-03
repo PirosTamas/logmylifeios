@@ -4,6 +4,7 @@ import Foundation
 class DailyLifeDataViewModel {
     var questionsForToday: [DailyLifeDataQuestion] = []
     var latestAnswers: [Int: String] = [:]
+    var allAnsweredToday: Bool = false
 
     private let questionRepository: DailyLifeDataQuestionRepository
     private let answerRepository: DailyLifeDataAnswerRepository
@@ -19,10 +20,21 @@ class DailyLifeDataViewModel {
         let today = todayAsJavaWeekday()
         let now = Date()
         let allQuestions = (try? questionRepository.getAll()) ?? []
-        questionsForToday = allQuestions.filter {
+        let scheduledToday = allQuestions.filter {
             $0.scheduledDays.contains(today) && $0.startDate <= now
         }
+
         let allAnswers = (try? answerRepository.getAll()) ?? []
+        let startOfToday = Calendar.current.startOfDay(for: now)
+        let answeredTodayIds = Set(
+            allAnswers
+                .filter { $0.createdAt >= startOfToday }
+                .map { $0.questionId }
+        )
+
+        questionsForToday = scheduledToday.filter { !answeredTodayIds.contains($0.id) }
+        allAnsweredToday = !scheduledToday.isEmpty && questionsForToday.isEmpty
+
         for q in questionsForToday {
             latestAnswers[q.id] = allAnswers
                 .filter { $0.questionId == q.id }
