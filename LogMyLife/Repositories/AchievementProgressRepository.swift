@@ -27,4 +27,9 @@ class AchievementProgressRepository {
     func save() throws {
         try context.save()
     }
+
+    func delete(_ item: AchievementProgress) throws {
+        context.delete(item)
+        try context.save()
+    }
 }

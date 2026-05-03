@@ -38,6 +38,11 @@ class ProgressViewModel {
         load()
     }
 
+    func delete(_ achievement: AchievementProgress) {
+        try? repository.delete(achievement)
+        load()
+    }
+
     func getById(id: Int) -> AchievementProgress? {
         try? repository.getById(id: id)
     }
