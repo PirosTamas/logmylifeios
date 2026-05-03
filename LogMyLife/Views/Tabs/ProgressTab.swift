@@ -18,7 +18,7 @@ struct ProgressTab: View {
         .sheet(isPresented: $router.showAddGoal) {
             if let vm = viewModel {
                 NavigationStack {
-                    AddProgressScreen(viewModel: vm)
+                    GoalFormScreen(viewModel: vm)
                 }
             }
         }
